@@ -16,18 +16,21 @@ export interface StartCallWebSocketMessage {
 }
 
 export interface WebRTCIceCandidateWebSocketMessage {
-    caller: RTCIceCandidate;
+    candiate: RTCIceCandidate;
+    caller: User;
     recipient: User;
 }
 
 export interface WebRTCOfferWebSocketMessage {
     offer: RTCSessionDescription;
-    otherPerson: User;
+    caller: User;
+    recipient: User;
 }
 
 export interface WebRTCAnswerWebSocketMessage {
     answer: RTCSessionDescription;
-    otherPerson: User;
+    caller: User;
+    recipient: User;
 }
 
 // these 4 messages are related to the call itself, thus we can
