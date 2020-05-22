@@ -58,23 +58,23 @@ export class Server {
                 });
             });
 
-            socket.on('webrtc_ice_candidate', (data: WebRTCIceCandidateWebSocketMessage) => {
+            socket.on('icecandidate', (data: WebRTCIceCandidateWebSocketMessage) => {
                 console.log(`received ice candidate from ${sender.sessionId}`);
                 
-                socket.to(data.recipient.socket).emit('webrtc_ice_candidate', data);
+                socket.to(data.recipient.socket).emit('icecandidate', data);
             });
 
-            socket.on('webrtc_offer', (data: WebRTCOfferWebSocketMessage) => {
+            socket.on('offer', (data: WebRTCOfferWebSocketMessage) => {
                 console.log(`received offer from ${sender.sessionId}, send offer to ${data.caller.sessionId}`);
                 
-                socket.to(data.caller.socket).emit('webrtc_offer', data);
+                socket.to(data.caller.socket).emit('offer', data);
             });
 
 
-            socket.on('webrtc_answer', (data: WebRTCAnswerWebSocketMessage) => {
-                console.log(`received answer from ${sender.sessionId}`);
+            socket.on('answer', (data: WebRTCAnswerWebSocketMessage) => {
+                console.log(`received answer from ${data.caller.sessionId}`);
                 
-                socket.to(data.caller.socket).emit('webrtc_answer', data);
+                socket.to(data.caller.socket).emit('answer', data);
             });
 
             socket.on("disconnect", () => {
