@@ -60,8 +60,12 @@ export class Server {
 
             socket.on('icecandidate', (data: WebRTCIceCandidateWebSocketMessage) => {
                 console.log(`received ice candidate from ${sender.sessionId}`);
-                
-                socket.to(data.recipient.socket).emit('icecandidate', data);
+
+                if (sender.sessionId === data.caller.sessionId) {
+                    socket.to(data.recipient.socket).emit('icecandidate', data);
+                } else {
+                    socket.to(data.caller.socket).emit('icecandidate', data);
+                }
             });
 
             socket.on('offer', (data: WebRTCOfferWebSocketMessage) => {
@@ -72,9 +76,9 @@ export class Server {
 
 
             socket.on('answer', (data: WebRTCAnswerWebSocketMessage) => {
-                console.log(`received answer from ${data.caller.sessionId}`);
+                console.log(`received answer from ${sender.sessionId}, send answer to ${data.recipient.sessionId}`);
                 
-                socket.to(data.caller.socket).emit('answer', data);
+                socket.to(data.recipient.socket).emit('answer', data);
             });
 
             socket.on("disconnect", () => {
